@@ -2,6 +2,26 @@ import random
 
 equipos = ['Medellin', 'Nacional', 'Millonarios', 'Envigado', 'America', 'Huila']
 
+def crear_partidos(equipos):
+    todos_los_partidos = []
+    for i in range(len(equipos)):
+        for j in range(i + 1, len(equipos)):
+            todos_los_partidos.append((equipos[i], equipos[j]))
+    return todos_los_partidos
+
+def verificar_fechas(lista_de_partidos):
+    numero_fechas = len(equipos) - 1
+    partidos_por_fecha = len(equipos) // 2
+    for i in range(numero_fechas):
+        equipos_en_fecha = set()
+        for j in range(partidos_por_fecha):
+            partido_actual = lista_de_partidos[i * partidos_por_fecha + j]
+            equipos_en_fecha.add(partido_actual[0])
+            equipos_en_fecha.add(partido_actual[1])
+        if len(equipos_en_fecha) < len(equipos):
+            return False
+    return True
+
 
 def crear_tabla(equipos):
     tabla = []
@@ -62,11 +82,26 @@ def iniciar_torneo():
     print()
     print(f'{"Partidos Jugados".center(35, " ")}')
     print()
-    for i in range(len(equipos)):
-        for j in range(i+1,len(equipos)):
-            resultado_partido = jugar_partido(equipos[i], equipos[j])
+
+    # crear todas las combinaciones de partidos
+    todos_los_partidos = crear_partidos(equipos)
+
+    # verificar que cada fecha contenga 3 partidos con los 6 equipos
+    while not (verificar_fechas(todos_los_partidos)):
+        random.shuffle(todos_los_partidos)
+
+    print()
+    for i in range(5):
+        # iniciar cada fecha
+        print(f'Fecha {i + 1}'.center(40, " "))
+        for j in range(3):
+            # jugar cada partido
+            partido = todos_los_partidos[i * 3 + j]
+            resultado_partido = jugar_partido(partido[0], partido[1])
             print(resultado_partido)
             actualizar_tabla(resultado_partido, tabla)
+        print()
+
     tabla = ordenar_tabla(tabla)
     imprimir_tabla(tabla)
 

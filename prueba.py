@@ -2,10 +2,12 @@ import random
 
 equipos = ['Nacional', 'Medellin', 'Pasto', 'Millonarios', 'America', 'Pereira']
 
-todos_los_partidos = []
-for i in range(len(equipos)):
-    for j in range(i + 1, len(equipos)):
-        todos_los_partidos.append((equipos[i], equipos[j]))
+def crear_partidos(equipos):
+    todos_los_partidos = []
+    for i in range(len(equipos)):
+        for j in range(i + 1, len(equipos)):
+            todos_los_partidos.append((equipos[i], equipos[j]))
+    return todos_los_partidos
 
 
 def verificar_fechas(lista_de_partidos):
